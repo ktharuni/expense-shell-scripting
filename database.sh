@@ -34,11 +34,11 @@ echo "Script started executing at: $(date)"
 
 CHECK()
 
-dnf list installed mysql-server &>> $LOG_FILE
+dnf list installed mysql-server &>>$LOG_FILE
 if [ $? -ne 0 ]
 then
    echo "mysql is not yet installed...installing now" | tee -a $LOG_FILE
-   dnf install mysql-server -y &>> $LOG_FILE
+   dnf install mysql-server -y &>>$LOG_FILE
    VALIDATE mysql installation
 else
    echo "mysql is already installed"
@@ -50,7 +50,7 @@ then
     echo "mysql service is not yet started and enabled...start now and enable it" | tee -a $LOG_FILE
     systemctl start mysqld 
     VALIDATE mysql service  
-    systemctl enable mysqld &>> $LOG_FILE
+    systemctl enable mysqld &>>$LOG_FILE
     VALIDATE mysqlservice enable
 else
    echo "mysql service is already started and enabled"
@@ -60,7 +60,7 @@ mysql -h 23.20.161.234 -u root -pExpense@1 -e 'show databases'
 if [ $? -ne 0 ]
 then
    echo "Password setup is not yet done....setting up password" | tee -a $LOG_FILE
-   mysql_secure_installation --set-root-pass pExpense@1 &>> $LOG_FILE
+   mysql_secure_installation --set-root-pass pExpense@1 &>>$LOG_FILE
    VALIDATE mysqlpassword setup
 else
    echo "mysql password is already setup....skip it"
