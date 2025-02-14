@@ -34,7 +34,7 @@ echo "Script started executing at: $(date)"
 
 CHECK()
 
-dnf list installed mysql-server >>$LOG_FILE
+dnf list installed mysql-server >>$LOG_FILE 2>&1
 if [ $? -ne 0 ]
 then
    echo "mysql is not yet installed...installing now" | tee -a $LOG_FILE
