@@ -5,7 +5,7 @@ TIMESTAMP=$(date +%Y-%m-%d-%H-%M-%S)
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 LOG_FILE="$LOG_DIR/$SCRIPT_NAME-$TIMESTAMP.log"
 
-mkdir -p $LOG_FILE
+mkdir -p $LOG_DIR
 
 USERID=$(id -u)
 R="\e[31m"
@@ -34,7 +34,7 @@ echo "Script started executing at: $(date)"
 
 CHECK()
 
-dnf list installed mysql-server >>$LOG_FILE 2>&1
+dnf list installed mysql-server &>>$LOG_FILE 
 if [ $? -ne 0 ]
 then
    echo "mysql is not yet installed...installing now" | tee -a $LOG_FILE
