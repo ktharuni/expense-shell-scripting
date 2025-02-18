@@ -20,12 +20,12 @@ CHECK(){
       fi
 }
 VALIDATE(){
-        if [ $? -ne 0 ]
+        if [ $1 -ne 0 ]
         then
-          echo -e "$1 $2 is $R failed $N"
+          echo -e "$2 is $R failed $N" | tee -a $LOG_FILE
           exit 1
         else
-          echo -e "$1 $2 is $G successful $N"  
+          echo -e "$2 is $G successful $N" | tee -a $LOG_FILE 
         fi          
 }
 
@@ -39,7 +39,7 @@ if [ $? -ne 0 ]
 then
    echo "mysql is not yet installed...installing now" | tee -a $LOG_FILE
    dnf install mysql-server -y &>>$LOG_FILE
-   VALIDATE mysql installation
+   VALIDATE $? "mysql installation"
 else
    echo "mysql is already installed"
 fi
@@ -49,9 +49,9 @@ if [ $? -ne 0 ]
 then
     echo "mysql service is not yet started and enabled...start now and enable it" | tee -a $LOG_FILE
     systemctl start mysqld 
-    VALIDATE mysql service  
+    VALIDATE $? "mysql service"  
     systemctl enable mysqld &>>$LOG_FILE
-    VALIDATE mysqlservice enable
+    VALIDATE $? "mysql service enabling"
 else
    echo "mysql service is already started and enabled"
 fi 
@@ -61,7 +61,7 @@ if [ $? -ne 0 ]
 then
    echo "Password setup is not yet done....setting up password" | tee -a $LOG_FILE
    mysql_secure_installation --set-root-pass pExpense@1 &>>$LOG_FILE
-   VALIDATE mysqlpassword setup
+   VALIDATE $? "mysqlpassword setup"
 else
    echo "mysql password is already setup....skip it"
 fi
